@@ -1,0 +1,65 @@
+{
+  "main_model": {
+    "file": "xgboost_monotonic_calibrated.joblib",
+    "features_numeric": [
+      "age",
+      "annual_income",
+      "monthly_income",
+      "debt_to_income_ratio",
+      "credit_score",
+      "loan_amount",
+      "interest_rate",
+      "loan_term",
+      "installment",
+      "num_of_open_accounts",
+      "total_credit_limit",
+      "current_balance",
+      "delinquency_history",
+      "public_records",
+      "num_of_delinquencies"
+    ],
+    "features_categorical": [
+      "gender",
+      "marital_status",
+      "education_level",
+      "employment_status",
+      "loan_purpose",
+      "grade_subgrade"
+    ],
+    "use_case": "scoring / explaining already-graded or approved loans (includes grade_subgrade)",
+    "test_roc_auc": 0.8933083984375,
+    "test_brier": 0.07861637762129406
+  },
+  "pre_underwriting_model": {
+    "file": "xgboost_monotonic_calibrated_preunderwriting.joblib",
+    "features_numeric": [
+      "age",
+      "annual_income",
+      "monthly_income",
+      "debt_to_income_ratio",
+      "credit_score",
+      "loan_amount",
+      "interest_rate",
+      "loan_term",
+      "installment",
+      "num_of_open_accounts",
+      "total_credit_limit",
+      "current_balance",
+      "delinquency_history",
+      "public_records",
+      "num_of_delinquencies"
+    ],
+    "features_categorical": [
+      "gender",
+      "marital_status",
+      "education_level",
+      "employment_status",
+      "loan_purpose"
+    ],
+    "use_case": "pre-approval / application-time scoring (no grade_subgrade)",
+    "test_roc_auc": 0.893891796875,
+    "test_brier": 0.07874762516586242
+  },
+  "random_state": 42,
+  "target": "default (= 1 - loan_paid_back)"
+}

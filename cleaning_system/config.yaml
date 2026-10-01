@@ -1,0 +1,45 @@
+# Bank-wide outlier/cleaning config.
+# One file per dataset type (loan, credit_card, transactions...). This one covers loan applications.
+# A new table needs a new config, not a code change.
+
+dataset_name: loan_applications
+
+# Columns to never treat as numeric-outlier candidates even if dtype is numeric
+# (IDs, flags, categorical-coded-as-int, targets).
+exclude_columns:
+  - loan_paid_back   # target label
+  - public_records   # low-cardinality count, checked via domain rule instead
+
+# Hard domain bounds. Violations are always flagged, whatever the z-score says
+# (a value can be invalid yet look normal in a skewed column).
+domain_rules:
+  age: {min: 18, max: 100}
+  credit_score: {min: 300, max: 850}
+  debt_to_income_ratio: {min: 0, max: 1}
+  annual_income: {min: 0}
+  monthly_income: {min: 0}
+  loan_amount: {min: 0}
+  interest_rate: {min: 0, max: 60}
+  loan_term: {values: [12, 24, 36, 48, 60, 72, 84]}
+  installment: {min: 0}
+  num_of_open_accounts: {min: 0}
+  total_credit_limit: {min: 0}
+  current_balance: {min: 0}
+  num_of_delinquencies: {min: 0}
+  public_records: {min: 0}
+
+# Cross-field consistency rules (a row can pass every single-column check and
+# still be nonsense). Each "name" must match a registered check function in
+# outlier_detector.py (CONSISTENCY_CHECKS). Config can't run arbitrary code.
+consistency_rules:
+  - name: balance_exceeds_limit
+    params: {slack: 1.02}          # small slack for interest accrual
+  - name: monthly_income_income_mismatch
+    params: {tolerance: 0.15}
+  - name: installment_loan_term_mismatch
+
+# Z-score thresholds
+zscore_threshold: 3.5        # standard z-score cutoff (|z| > this = flag)
+robust_zscore_threshold: 3.5 # modified z-score (MAD-based) cutoff
+skew_threshold: 1.0          # |skewness| above this -> use robust z-score instead of standard
+min_unique_for_numeric: 8    # columns with fewer distinct values treated as categorical/binary, skipped

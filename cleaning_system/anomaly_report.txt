@@ -1,0 +1,39 @@
+rows analyzed: 20000
+rows flagged (>=1 anomaly signal): 1455
+
+-- per-column z-score results --
+age                          method=standard_z  skew=  0.014 flagged=0
+annual_income                method=robust_z    skew=  2.331 flagged=622
+monthly_income               method=robust_z    skew=  2.331 flagged=622
+debt_to_income_ratio         method=standard_z  skew=  0.788 flagged=45
+credit_score                 method=standard_z  skew= -0.071 flagged=3
+loan_amount                  method=standard_z  skew=  0.253 flagged=12
+interest_rate                method=standard_z  skew=  0.027 flagged=7
+loan_term                    skipped_low_cardinality (2 distinct values)
+installment                  method=standard_z  skew=  0.471 flagged=30
+num_of_open_accounts         method=standard_z  skew=  0.446 flagged=40
+total_credit_limit           method=robust_z    skew=  2.485 flagged=734
+current_balance              method=robust_z    skew=   2.79 flagged=769
+delinquency_history          method=standard_z  skew=  0.827 flagged=50
+num_of_delinquencies         method=standard_z  skew=  0.722 flagged=50
+
+-- domain rule violations --
+age                          violations=0
+credit_score                 violations=0
+debt_to_income_ratio         violations=0
+annual_income                violations=0
+monthly_income               violations=0
+loan_amount                  violations=0
+interest_rate                violations=0
+loan_term                    violations=0
+installment                  violations=0
+num_of_open_accounts         violations=0
+total_credit_limit           violations=0
+current_balance              violations=0
+num_of_delinquencies         violations=0
+public_records               violations=0
+
+-- cross-field consistency violations --
+balance_exceeds_limit        violations=0
+monthly_income_income_mismatch violations=0
+installment_loan_term_mismatch violations=0

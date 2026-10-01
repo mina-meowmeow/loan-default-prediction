@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Source data (download from Kaggle, see README)
+loan_dataset_20000.csv
+
+# Generated output (rebuilt by cleaning_system/detection.ipynb)
+cleaning_system/flagged_output.csv
+
+# Editor and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,31 @@
+"""
+Bank-wide statistical cleaning and outlier-flagging system.
+
+Reusable across any bank table (loan applications, credit cards,
+transactions). Point it at a CSV and a small YAML config and it flags
+anomalous rows.
+
+Why not a plain z-score alone:
+  - Raw mean/std z-scores are distorted by the extreme values they're
+    meant to catch, so skewed money columns (income, loan_amount) get
+    under- or over-flagged. The fix is to detect skew per column and
+    switch to a median/MAD-based modified z-score for skewed columns.
+  - Binary, low-cardinality and ID columns (public_records, loan_term
+    codes) break z-score assumptions. The config excludes them instead
+    of pushing them through the numeric pipeline.
+  - A value can look statistically normal and still be invalid (age 150,
+    credit_score 900, negative income). A separate hard domain-rule
+    layer catches these and always runs, whatever the z-score says.
+  - A row can pass every single-column check and still contradict
+    itself (current_balance > total_credit_limit, monthly*12 != annual).
+    A separate cross-field consistency layer handles that.
+  - Small samples and zero-variance columns make a std-based z-score
+    divide by about 0. Those columns are skipped with a warning, so no
+    inf or NaN flags come out.
+  - MAD collapses when more than 50% of values are identical (heavy
+    rounding or duplication). In that case the code falls back to mean
+    absolute deviation to avoid dividing by zero.
+
+Usage:
+    python outlier_detector.py <data.csv> <config.yaml> [--out flagged.csv] [--report report.txt]
+"""
