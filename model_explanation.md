@@ -1,8 +1,7 @@
 Loan default prediction model: write-up
 ========================================
 
-1. Goal
--------
+**1. Goal**
 Predict whether a borrower will default, using the applicant and loan
 fields in loan_dataset_20000.csv (20,000 rows).
 
@@ -14,8 +13,7 @@ The class split is 80% paid back and 20% defaulted. That's real, not a
 data error, so it's handled with class weighting (section 4).
 
 
-2. Input features
------------------
+**2. Input features**
 Numeric (15):
   age, annual_income, monthly_income, debt_to_income_ratio, credit_score,
   loan_amount, interest_rate, loan_term, installment, num_of_open_accounts,
@@ -29,8 +27,7 @@ Categorical (6):
 Nothing is missing, so there was no imputation.
 
 
-3. EDA walk-through
-----------------------
+**3. EDA walk-through**
 - employment_status is the strongest single driver. Unemployed borrowers
   default 82% of the time, students 59%, self-employed and employed
   about 11%, retired about 0.5%.
@@ -48,8 +45,7 @@ Nothing is missing, so there was no imputation.
   were dropped before modeling.
 
 
-4. Modeling approach
---------------------
+**4. Modeling approach**
 The split is 80% train, 20% test, stratified on the target so both keep
 the 80/20 class ratio.
 
@@ -82,8 +78,7 @@ classifier.
      and categorical signal, and that held here.
 
 
-5. Results (held-out test set, 4,000 rows)
-------------------------------------------
+**5. Results (held-out test set, 4,000 rows)**
                         ROC-AUC   PR-AUC   Recall(default)
   Logistic Regression    0.886    0.772        0.73
   Random Forest          0.882    0.769        0.69
@@ -269,7 +264,7 @@ Here is how each term gets filled in from this data and model.
        assumption, proxied by loan_purpose as a stand-in for secured
        versus unsecured:
          Home                -> 25%  (secured, real estate)
-         Car                 -> 40%  (secured, depreciating asset)
+         Car                 -> 40%  (secured,sh depreciating asset)
          all other purposes  -> 65%  (unsecured: debt consolidation,
                                       business, medical, education,
                                       vacation, other)
